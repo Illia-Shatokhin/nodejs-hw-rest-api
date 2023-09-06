@@ -49,4 +49,10 @@ export async function updateContactById(id, data) {
   return contacts[index];
 }
 
-export default { addContact, removeContact, getContactById, listContacts };
+export default {
+  addContact,
+  removeContact,
+  getContactById,
+  listContacts,
+  updateContactById,
+};
