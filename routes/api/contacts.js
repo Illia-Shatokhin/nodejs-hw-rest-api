@@ -12,14 +12,14 @@ import contactsValidation from "../../middleware/validation/contacts-validation.
 
 const router = Router();
 
-router.get("/", getAll);
+// router.get("/", getAll);
 
-router.get("/:id", getById);
+// router.get("/:id", getById);
 
-router.post("/", contactsValidation.addContactvalidate, add);
+// router.post("/", contactsValidation.addContactvalidate, add);
 
-router.put("/:id", contactsValidation.updateContactValidate, updateById);
+// router.put("/:id", contactsValidation.updateContactValidate, updateById);
 
-router.delete("/:id", deleteById);
+// router.delete("/:id", deleteById);
 
 export default router;
