@@ -4,43 +4,43 @@ import { ctrlWrapper } from "../decorators/index.js";
 
 import { HttpError } from "../helpers/index.js";
 
-export async function getAll(req, res) {
+async function getAll(req, res) {
   const result = await Contact.find({}, "-createdAt -updatedAt");
   res.json(result);
 }
 
-export async function getById(req, res, next) {
+async function getById(req, res) {
   const { id } = req.params;
   const result = await Contact.findById(id);
   if (!result) {
-    return next(HttpError(404, `contact with id=${id} not found`));
+    throw HttpError(404, `contact with id=${id} not found`);
   }
   res.json(result);
 }
 
-export async function add(req, res) {
+async function add(req, res) {
   const result = await Contact.create(req.body);
   res.status(201).json(result);
 }
 
-export async function deleteById(req, res, next) {
+async function deleteById(req, res) {
   const { id } = req.params;
   const result = await Contact.findByIdAndDelete(id);
   if (!result) {
-    return next(HttpError(404, `contact with id=${id} not found`));
+    throw HttpError(404, `contact with id=${id} not found`);
   }
   res.json({
     message: "Delete success",
   });
 }
 
-export async function updateById(req, res, next) {
+async function updateById(req, res) {
   const { id } = req.params;
   const result = await Contact.findByIdAndUpdate(id, req.body, {
     new: true,
   });
   if (!result) {
-    return next(HttpError(404, `contact with id=${id} not found`));
+    throw HttpError(404, `contact with id=${id} not found`);
   }
   res.json(result);
 }
