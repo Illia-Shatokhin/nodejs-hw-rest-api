@@ -1,37 +1,31 @@
-import { ctrlWrapper } from "../decorators/index.js";
+import Contact from "../models/Contact.js";
 
-import {
-  addContact,
-  getContactById,
-  listContacts,
-  removeContact,
-  updateContactById,
-} from "../models/contacts.js";
+import { ctrlWrapper } from "../decorators/index.js";
 
 import { HttpError } from "../helpers/index.js";
 
-export async function getAll(req, res) {
-  const result = await listContacts();
+async function getAll(req, res) {
+  const result = await Contact.find({}, "-createdAt -updatedAt");
   res.json(result);
 }
 
-export async function getById(req, res) {
+async function getById(req, res) {
   const { id } = req.params;
-  const result = await getContactById(id);
+  const result = await Contact.findById(id);
   if (!result) {
     throw HttpError(404, `contact with id=${id} not found`);
   }
   res.json(result);
 }
 
-export async function add(req, res) {
-  const result = await addContact(req.body);
+async function add(req, res) {
+  const result = await Contact.create(req.body);
   res.status(201).json(result);
 }
 
-export async function deleteById(req, res) {
+async function deleteById(req, res) {
   const { id } = req.params;
-  const result = await removeContact(id);
+  const result = await Contact.findByIdAndDelete(id);
   if (!result) {
     throw HttpError(404, `contact with id=${id} not found`);
   }
@@ -40,9 +34,11 @@ export async function deleteById(req, res) {
   });
 }
 
-export async function updateById(req, res) {
+async function updateById(req, res) {
   const { id } = req.params;
-  const result = await updateContactById(id, req.body);
+  const result = await Contact.findByIdAndUpdate(id, req.body, {
+    new: true,
+  });
   if (!result) {
     throw HttpError(404, `contact with id=${id} not found`);
   }
