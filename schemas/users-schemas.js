@@ -10,6 +10,7 @@ const usersSchema = Joi.object({
   password: Joi.string().min(6).pattern(passwordRegexp).required().messages({
     "any.required": "missing required password field",
   }),
+  subscription: Joi.string().valid("starter", "pro", "business"),
 });
 
 export default { usersSchema };
