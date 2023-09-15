@@ -6,7 +6,11 @@ import { isValidId } from "../../middlewares/validation/index.js";
 
 import contactController from "../../controllers/contacts-controller.js";
 
+import { authenticate } from "../../middlewares/index.js";
+
 const router = Router();
+
+router.use(authenticate);
 
 router.get("/", contactController.getAll);
 
