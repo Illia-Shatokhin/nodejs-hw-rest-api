@@ -4,4 +4,8 @@ import { validateBody } from "../../decorators/index.js";
 
 const userValidate = validateBody(usersSchemas.usersSchema);
 
-export default { userValidate };
+const userSubscriptionValidate = validateBody(
+  usersSchemas.usersSubscriptionFieldSchema
+);
+
+export default { userValidate, userSubscriptionValidate };

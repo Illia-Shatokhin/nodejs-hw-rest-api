@@ -13,4 +13,10 @@ const usersSchema = Joi.object({
   subscription: Joi.string().valid("starter", "pro", "business"),
 });
 
-export default { usersSchema };
+const usersSubscriptionFieldSchema = Joi.object({
+  subscription: Joi.string().valid("starter", "pro", "business").messages({
+    "any.required": "missing required favorite field",
+  }),
+});
+
+export default { usersSchema, usersSubscriptionFieldSchema };

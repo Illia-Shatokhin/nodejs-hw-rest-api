@@ -37,11 +37,12 @@ const login = async (req, res) => {
     throw HttpError(401, "Email or password is wrong");
   }
 
-  const payload = {
-    id: user._id,
-  };
+  const { _id: id } = user;
+
+  const payload = { id };
 
   const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "23h" });
+  await User.findByIdAndUpdate(id, { token });
 
   res.json({
     token,
@@ -52,4 +53,32 @@ const login = async (req, res) => {
   });
 };
 
-export default { register: ctrlWrapper(register), login: ctrlWrapper(login) };
+const getCurrent = async (req, res) => {
+  const { email, subscription } = req.user;
+
+  res.json({ email, subscription });
+};
+
+const logout = async (req, res) => {
+  const { _id } = req.user;
+  await User.findByIdAndUpdate(_id, { token: "" });
+
+  res.status(204).json({ message: "No Content" });
+};
+
+const subscriptionUpdate = async (req, res) => {
+  const { _id } = req.user;
+  const result = await User.findByIdAndUpdate(_id, req.body, {
+    new: true,
+  });
+
+  res.json(result);
+};
+
+export default {
+  register: ctrlWrapper(register),
+  login: ctrlWrapper(login),
+  getCurrent: ctrlWrapper(getCurrent),
+  logout: ctrlWrapper(logout),
+  subscriptionUpdate: ctrlWrapper(subscriptionUpdate),
+};
