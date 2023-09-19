@@ -5,7 +5,14 @@ import { ctrlWrapper } from "../decorators/index.js";
 import { HttpError } from "../helpers/index.js";
 
 async function getAll(req, res) {
-  const result = await Contact.find({}, "-createdAt -updatedAt");
+  const { _id: owner } = req.user;
+  const { page = 1, limit = 1, favorite } = req.query;
+  const filterObject = favorite ? { owner, favorite } : { owner };
+  const skip = (page - 1) * limit;
+  const result = await Contact.find(filterObject, "-createdAt -updatedAt", {
+    skip,
+    limit,
+  }).populate("owner");
   res.json(result);
 }
 
@@ -19,7 +26,8 @@ async function getById(req, res) {
 }
 
 async function add(req, res) {
-  const result = await Contact.create(req.body);
+  const { _id: owner } = req.user;
+  const result = await Contact.create({ ...req.body, owner });
   res.status(201).json(result);
 }
 
