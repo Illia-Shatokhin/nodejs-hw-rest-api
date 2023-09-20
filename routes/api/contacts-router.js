@@ -6,7 +6,7 @@ import { isValidId } from "../../middlewares/validation/index.js";
 
 import contactController from "../../controllers/contacts-controller.js";
 
-import { authenticate } from "../../middlewares/index.js";
+import { authenticate, upload } from "../../middlewares/index.js";
 
 const router = Router();
 
@@ -16,7 +16,12 @@ router.get("/", contactController.getAll);
 
 router.get("/:id", isValidId, contactController.getById);
 
-router.post("/", contactsValidation.addContactvalidate, contactController.add);
+router.post(
+  "/",
+  upload.single("avatar"),
+  contactsValidation.addContactvalidate,
+  contactController.add
+);
 
 router.put(
   "/:id",
