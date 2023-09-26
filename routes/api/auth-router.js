@@ -4,7 +4,7 @@ import usersValidation from "../../middlewares/validation/users-validation.js";
 
 import userController from "../../controllers/users-controller.js";
 
-import { authenticate } from "../../middlewares/index.js";
+import { authenticate, upload } from "../../middlewares/index.js";
 
 const authRouter = Router();
 
@@ -26,5 +26,7 @@ authRouter.patch(
   usersValidation.userSubscriptionValidate,
   userController.subscriptionUpdate
 );
+
+authRouter.patch("/avatars", authenticate, upload.single("avatar"), userController.updateAvatar)
 
 export default authRouter;

@@ -1,12 +1,16 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import gravatar from "gravatar";
+import fs from "fs/promises"
+import path from "path"
 
 import User from "../models/User.js";
 
 import { ctrlWrapper } from "../decorators/index.js";
 
 import { HttpError } from "../helpers/index.js";
+
+const avatarsPath = path.resolve("public", "avatars")
 
 const { JWT_SECRET } = process.env;
 
@@ -82,10 +86,21 @@ const subscriptionUpdate = async (req, res) => {
   res.json(result);
 };
 
+const updateAvatar = async (req, res) => {
+  // console.log(req.body);
+  // console.log(req.file);
+  const {_id: owner} = req.user
+  console.log(req.file);
+  const {path: oldPath, filename} = req.file
+  const newPath = path.join(avatarsPath, filename)
+  fs.rename(oldPath, newPath)
+}
+
 export default {
   register: ctrlWrapper(register),
   login: ctrlWrapper(login),
   getCurrent: ctrlWrapper(getCurrent),
   logout: ctrlWrapper(logout),
   subscriptionUpdate: ctrlWrapper(subscriptionUpdate),
+  updateAvatar: ctrlWrapper(updateAvatar)
 };

@@ -6,6 +6,8 @@ import "dotenv/config";
 import contactsRouter from "./routes/api/contacts-router.js";
 import authRouter from "./routes/api/auth-router.js";
 
+import path from "path"
+
 const app = express();
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
@@ -13,7 +15,8 @@ const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 app.use(logger(formatsLogger));
 app.use(cors());
 app.use(json());
-app.use(express.static("public"));
+// app.use(express.static("public"));
+app.use('/public', express.static(path.join('./public')))
 
 app.use("/api/users", authRouter);
 app.use("/api/contacts", contactsRouter);
