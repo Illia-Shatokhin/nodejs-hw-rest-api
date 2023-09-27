@@ -100,7 +100,7 @@ const updateAvatar = async (req, res) => {
     { avatarURL },
     { new: true }
   );
-  res.json(result);
+  res.json({ avatarURL: result.avatarURL });
 };
 
 export default {
