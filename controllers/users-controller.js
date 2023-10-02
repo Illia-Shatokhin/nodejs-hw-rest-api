@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import path from "path";
 import fs from "fs/promises";
 import Jimp from "jimp";
+import gravatar from "gravatar";
 
 import User from "../models/User.js";
 
@@ -23,7 +24,13 @@ const register = async (req, res) => {
 
   const hashPassword = await bcrypt.hash(password, 10);
 
-  const newUser = await User.create({ ...req.body, password: hashPassword });
+  const avatarURL = gravatar.url(email);
+
+  const newUser = await User.create({
+    ...req.body,
+    password: hashPassword,
+    avatarURL,
+  });
 
   res.status(201).json({
     email: newUser.email,
