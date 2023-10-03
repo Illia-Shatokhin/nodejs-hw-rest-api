@@ -19,4 +19,10 @@ const usersSubscriptionFieldSchema = Joi.object({
   }),
 });
 
-export default { usersSchema, usersSubscriptionFieldSchema };
+const usersEmailSchema = Joi.object({
+  email: Joi.string().pattern(emailRegexp).required().messages({
+    "any.required": "missing required field email",
+  }),
+});
+
+export default { usersSchema, usersSubscriptionFieldSchema, usersEmailSchema };

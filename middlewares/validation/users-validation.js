@@ -8,4 +8,6 @@ const userSubscriptionValidate = validateBody(
   usersSchemas.usersSubscriptionFieldSchema
 );
 
-export default { userValidate, userSubscriptionValidate };
+const userEmailValidate = validateBody(usersSchemas.usersEmailSchema);
+
+export default { userValidate, userSubscriptionValidate, userEmailValidate };
