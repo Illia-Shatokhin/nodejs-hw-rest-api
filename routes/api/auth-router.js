@@ -27,6 +27,19 @@ authRouter.patch(
   userController.subscriptionUpdate
 );
 
-authRouter.patch("/avatars", authenticate, upload.single("avatar"), userController.updateAvatar)
+authRouter.patch(
+  "/avatars",
+  authenticate,
+  upload.single("avatar"),
+  userController.updateAvatar
+);
+
+authRouter.get("/verify/:verificationToken", userController.verify);
+
+authRouter.post(
+  "/verify",
+  usersValidation.userEmailValidate,
+  userController.resendVerifyEmail
+);
 
 export default authRouter;
